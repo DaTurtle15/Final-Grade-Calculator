@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>High School Final Grade Calculator</title>
+  <meta name="description" content="Find out what score you need on your final exam to get the grade you want in a class. Simple high school final grade calculator." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #020617;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      background-color: #020617;
+      border-radius: 18px;
+      padding: 22px 20px 24px;
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.35);
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 4px;
+    }
+    p {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+    .highlight {
+      color: #38bdf8;
+      font-weight: 600;
+    }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 14px 0 8px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+    input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #374151;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: border 0.15s ease, box-shadow 0.15s ease;
+    }
+    input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.5);
+    }
+    .field {
+      margin-bottom: 10px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .row .field {
+      flex: 1 1 0;
+      min-width: 140px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #2563eb, #22c55e);
+      color: #f9fafb;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.55);
+      transition: transform 0.08s ease, box-shadow 0.12s ease;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(30, 64, 175, 0.75);
+    }
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+    }
+    .result-box {
+      margin-top: 16px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), rgba(15, 23, 42, 1));
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .result-main {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .tagline {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 16px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 8px;
+    }
+    .tips {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+    .tips ul {
+      padding-left: 18px;
+      margin: 4px 0;
+    }
+    .tips li {
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>High School Final Grade Calculator</h1>
+    <p>
+      Find out what score you need on your final exam to get the grade you want in the class.
+      Enter your current grade, how much the final is worth, and your goal.
+    </p>
+
+    <div class="section-title">Enter your info</div>
+
+    <div class="row">
+      <div class="field">
+        <label for="currentGrade">Current grade in the class (%)</label>
+        <input id="currentGrade" type="number" min="0" max="150" step="0.1" placeholder="e.g. 87.5" />
+      </div>
+      <div class="field">
+        <label for="finalWeight">Final exam weight (% of total grade)</label>
+        <input id="finalWeight" type="number" min="1" max="100" step="0.1" placeholder="e.g. 20" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="targetGrade">Target overall course grade (%)</label>
+      <input id="targetGrade" type="number" min="0" max="150" step="0.1" placeholder="e.g. 90" />
+    </div>
+
+    <button id="calcBtn" type="button">
+      🔍 Calculate what I need
+    </button>
+
+    <div id="result" class="result-box" style="display:none;">
+      <div class="result-main" id="resultMain"></div>
+      <div id="resultDetail"></div>
+    </div>
+
+    <div class="tips">
+      <strong>How it works:</strong>
+      <ul>
+        <li>The part of your grade that is <span class="highlight">not</span> the final is based on your current grade.</li>
+        <li>The final exam is weighted separately using the percentage you enter.</li>
+        <li>We solve for the exam score that gives you your target overall grade.</li>
+      </ul>
+    </div>
+
+    <div class="tagline">
+      Made for high school students. Bookmark this and reuse it each semester.
+    </div>
+  </div>
+
+  <script>
+    function formatPercent(num) {
+      if (isNaN(num)) return "";
+      return num.toFixed(1).replace(/\.0$/, "") + "%";
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const current = parseFloat(document.getElementById("currentGrade").value);
+      const finalWeight = parseFloat(document.getElementById("finalWeight").value);
+      const target = parseFloat(document.getElementById("targetGrade").value);
+
+      const resultBox = document.getElementById("result");
+      const resultMain = document.getElementById("resultMain");
+      const resultDetail = document.getElementById("resultDetail");
+
+      if (isNaN(current) || isNaN(finalWeight) || isNaN(target)) {
+        resultBox.style.display = "block";
+        resultMain.textContent = "Please fill in all three fields.";
+        resultDetail.textContent = "Use numbers only, like 87.5, 20, and 90.";
+        return;
+      }
+
+      if (finalWeight <= 0 || finalWeight > 100) {
+        resultBox.style.display = "block";
+        resultMain.textContent = "Final exam weight looks off.";
+        resultDetail.textContent = "Make sure it is between 1 and 100 percent.";
+        return;
+      }
+
+      const finalFraction = finalWeight / 100;
+      const nonFinalFraction = 1 - finalFraction;
+
+      // target = current * nonFinalFraction + neededFinal * finalFraction
+      const neededFinal = (target - current * nonFinalFraction) / finalFraction;
+
+      resultBox.style.display = "block";
+
+      if (!isFinite(neededFinal)) {
+        resultMain.textContent = "Something went wrong with the numbers.";
+        resultDetail.textContent = "Check that the final weight is not 0 and try again.";
+        return;
+      }
+
+      let mainText;
+      if (neededFinal > 100) {
+        mainText = `You need about ${formatPercent(neededFinal)} on the final.`;
+      } else if (neededFinal < 0) {
+        mainText = `You technically need less than 0% on the final to still hit your target.`;
+      } else {
+        mainText = `You need about ${formatPercent(neededFinal)} on the final exam.`;
+      }
+
+      resultMain.textContent = mainText;
+
+      resultDetail.innerHTML = `
+        With a current grade of <span class="highlight">${formatPercent(current)}</span> and a final worth
+        <span class="highlight">${finalWeight}%</span> of your overall grade, you must score around
+        <span class="highlight">${formatPercent(neededFinal)}</span> on the final to end with
+        about <span class="highlight">${formatPercent(target)}</span> in the class.
+      `;
+    });
+  </script>
+</body>
+</html>
